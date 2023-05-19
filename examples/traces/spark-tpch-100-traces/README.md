@@ -28,7 +28,7 @@ For trace collection, we
 - python 3.9, 
 - pip install pandas, dgl, numpy
 
-### Code example
+### Code Example
 ```python
 # check examples/traces/spark-tpch-100-traces/main.py
 data_header = "examples/traces/spark-tpch-100-traces/data"
