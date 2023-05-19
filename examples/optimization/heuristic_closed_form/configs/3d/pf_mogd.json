@@ -1,0 +1,68 @@
+{
+  "moo_algo": "progressive_frontier",
+  "solver": "mogd",
+  "variables": [
+    {
+      "name": "v1",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 1,
+      "precision": 2
+    },
+    {
+      "name": "v2",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 1,
+      "precision": 2
+    },
+    {
+      "name": "v3",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 1,
+      "precision": 2
+    }
+  ],
+  "objectives": [
+    {
+      "name": "obj_1",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    },
+    {
+      "name": "obj_2",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    },
+    {
+      "name": "obj_3",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    }
+  ],
+  "constraints": [],
+  "additional_params":
+    {
+      "pf_option": "pf_ap",
+      "n_probes": 100,
+      "n_grids": 5,
+      "max_iters": 5,
+      "jobIds_path": "examples/optimization/gaussian_process_regressor/all_job_ids",
+      "accurate": true,
+      "alpha": 3.0,
+      "anchor_option": "2_step",
+      "opt_obj_ind": 0,
+      "mogd_params":
+      {
+      "learning_rate": 0.1,
+      "weight_decay": 0.1,
+      "max_iters": 100,
+      "patient": 20,
+      "stress": 10,
+      "multistart": 1,
+      "processes": 1,
+      "seed": 0
+        }
+    }
+}

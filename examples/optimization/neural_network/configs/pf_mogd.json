@@ -1,0 +1,69 @@
+{
+  "moo_algo": "progressive_frontier",
+  "solver": "mogd",
+  "variables": [
+    {
+      "name": "v1",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 5,
+      "precision": 2
+    },
+    {
+      "name": "v2",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 3,
+      "precision": 2
+    }
+  ],
+  "objectives": [
+    {
+      "name": "obj_1",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    },
+    {
+      "name": "obj_2",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    }
+  ],
+  "constraints": [
+    {
+      "name": "g1",
+      "type": "<="
+    },
+    {
+      "name": "g2",
+      "type": ">="
+    }
+  ],
+  "model": {
+    "name": "nn",
+    "in_features": 2
+  },
+  "additional_params":
+    {
+      "pf_option": "pf_ap",
+      "n_probes": 12,
+      "n_grids": 2,
+      "max_iters": 4,
+      "jobIds_path": "examples/optimization/heuristic_closed_form/all_job_ids",
+      "accurate": true,
+      "alpha": 3.0,
+      "anchor_option": "2_step",
+      "opt_obj_ind": 0,
+      "mogd_params":
+      {
+      "learning_rate": 0.1,
+      "weight_decay": 0.1,
+      "max_iters": 100,
+      "patient": 20,
+      "stress": 10,
+      "multistart": 1,
+      "processes": 1,
+      "seed": 0
+        }
+    }
+}
