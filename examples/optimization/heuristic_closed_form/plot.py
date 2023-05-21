@@ -48,22 +48,22 @@ if __name__ == '__main__':
     root_path = "examples/optimization/heuristic_closed_form/data/"
 
     # ## for 2D
-    # fig, ax = plt.subplots()
-    # fig1, axs = plt.subplots(2,2)
-    # for i, algo in enumerate(algos):
-    #     data_file = get_data_file(root_path, algo, mode="2d")
-    #     po = read_data(data_file, n_obj=2)
-    #
-    #     ax.plot(po[:, 0], po[:, 1], marker='o', label=algo)
-    #     axs[int(i/2), i%2].plot(po[:, 0], po[:, 1], marker='o')
-    #     axs[int(i/2), i%2].set_xlabel('Obj_1')
-    #     axs[int(i/2), i%2].set_ylabel('Obj_2')
-    #     axs[int(i/2), i%2].set_title(f'{algo}')
-    #
-    # ax.set_xlabel('Obj_1')
-    # ax.set_ylabel('Obj_2')
-    # ax.set_title('Pareto frontiers of MOO algorithms')
-    # ax.legend()
+    fig, ax = plt.subplots()
+    fig1, axs = plt.subplots(2,2)
+    for i, algo in enumerate(algos):
+        data_file = get_data_file(root_path, algo, mode="2d")
+        po = read_data(data_file, n_obj=2)
+
+        ax.plot(po[:, 0], po[:, 1], marker='o', label=algo)
+        axs[int(i/2), i%2].plot(po[:, 0], po[:, 1], marker='o')
+        axs[int(i/2), i%2].set_xlabel('Obj_1')
+        axs[int(i/2), i%2].set_ylabel('Obj_2')
+        axs[int(i/2), i%2].set_title(f'{algo}')
+
+    ax.set_xlabel('Obj_1')
+    ax.set_ylabel('Obj_2')
+    ax.set_title('Pareto frontiers of MOO algorithms')
+    ax.legend()
 
     # for 3D
     # fig3, ax3 = plt.subplots(projection='3d')

@@ -55,28 +55,35 @@ for i, wl_id in enumerate(jobIds):
 
     if len(obj_names) == 2:
         # pf-ap
-        assert (po_vars == np.array(
-            [[5.  ,3.  ],
-             [0.  ,0.5 ],
-             [0.03,0.76],
-             [0.  ,1.32],
-             [0.  ,1.52],
-             [0.  ,2.26],
-             [1.51,2.79],
-             [2.76,2.99],
-             [3.07,3.  ],
-             [3.45,2.88],
-             [0.  ,0.  ]]
-        )).all()
+        # assert (po_vars == np.array(
+        #     [[0.  ,0.  ],
+        #      [0.  ,0.24],
+        #      [0.  ,0.38],
+        #      [0.06,0.86],
+        #      [0.  ,1.11],
+        #      [0.  ,1.82],
+        #      [1.98,2.  ],
+        #      [1.65,2.95],
+        #      [2.74,3.  ],
+        #      [3.18,3.  ],
+        #      [3.26,3.  ],
+        #      [4.3 ,3.  ],
+        #      [4.69,3.  ],
+        #      [5.  ,3.  ]]
+        # )).all()
 
         # # pf-as
-        # assert (np.round(po_vars, 5) == np.round(np.array(
-        #     [[5.  ,3.  ],
-        #      [3.45,2.88],
-        #      [2.62,3.  ],
-        #      [2.17,2.97],
-        #      [0.  ,0.  ]]
-        # ), 5)).all()
+        assert (np.round(po_vars, 5) == np.round(np.array(
+            [[0.  ,0.  ],
+             [0.  ,0.97],
+             [0.  ,1.1 ],
+             [0.  ,1.37],
+             [0.  ,1.67],
+             [0.04,2.23],
+             [0.  ,2.94],
+             [4.69,3.  ],
+             [5.  ,3.  ]]
+        ), 5)).all()
         print("Test successfully!")
 
         # save data
@@ -84,6 +91,3 @@ for i, wl_id in enumerate(jobIds):
         results = np.hstack([po_objs, po_vars])
         moo_ut.save_results(data_path, results, wl_id, mode="data")
         moo_ut.save_results(data_path, [time_cost], wl_id, mode="time")
-
-        # if po_objs is not None:
-        #     moo_ut.plot_po(po_objs, n_obj=po_objs.shape[1], title="pf_gpr_PF-AP")

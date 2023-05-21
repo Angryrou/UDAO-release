@@ -1,0 +1,56 @@
+{
+  "moo_algo": "weighted_sum",
+  "solver": "grid_search",
+  "variables": [
+    {
+      "name": "v1",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "v2",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "v3",
+      "type": "FLOAT",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "objectives": [
+    {
+      "name": "obj_1",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    },
+    {
+      "name": "obj_2",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    },
+    {
+      "name": "obj_3",
+      "optimize_trend": "MIN",
+      "type": "FLOAT"
+    }
+  ],
+  "constraints": [],
+  "model": {
+    "name": "gpr",
+    "length_scale": 1,
+    "magnitude": 1.0,
+    "ridge": 1.0
+  },
+  "additional_params":
+    {
+      "jobIds_path": "examples/optimization/gaussian_process_regressor/all_job_ids",
+      "n_probes": 100,
+      "solver_params": {
+        "n_grids_per_var": [10, 10, 10]
+      }
+    }
+}

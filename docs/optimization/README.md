@@ -18,7 +18,7 @@
 
 ### Installation
 ```bash
-git clone --depth 1 --branch moo-release-v0.1 git@github.com:Angryrou/UDAO2022.git
+git clone https://github.com/Angryrou/UDAO-release.git
 conda create -n udao2022 python=3.9
 conda activate udao2022
 pip install -r requirements.txt
