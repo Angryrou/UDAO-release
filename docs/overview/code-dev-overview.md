@@ -6,10 +6,10 @@
     * [Dataset](#dataset)
     * [Model](#model)
     * [Optimization](#optimization)
-* [Coding work to be done](#Coding-work-to-be-done)
-    * [Data Processing Module](#data-processing-module)
-    * [Modeling Module](#modeling-module)
-    * [Optimization Module](#optimization-module)
+* [Coding work to be done](#coding-work-to-be-done)
+    * [Data Processing Milestores](#data-processing-milestores)
+    * [Modeling Milestores](#modeling-milestores)
+    * [Optimization Milestores](#optimization-milestores)
 
 ## The end-to-end usage of UDAO
 
@@ -75,10 +75,14 @@ p2 = moo.Variable(name="preset_1", tunable=False)
 p3 = moo.Variable(name="preset_2", tunable=False)
 
 # 3. define datasets
-ds1 = dataset.UdaoDataset(path="./system_states.csv", schema={"id": "INTEGER", "s1": "FLOAT", ...})
-ds2 = dataset.UdaoDataset(path="./variables.csv", schema={"id": "INTEGER", "x1": "FLOAT", ...})
-ds3 = dataset.UdaoDataset(path="./query_plan_index.csv", schema={"id": "INTEGER", "topology_id": "INTEGER", ...})
-ds = dataset.join([ds1, ds2, ds3], on_common_feat="id")
+ds1 = dataset.UdaoDataset(path="./variables.csv", 
+                          schema={"id": "INTEGER", "x1": "FLOAT", ...})
+ds2 = dataset.UdaoDataset(path="./query_plan_index.csv", 
+                          schema={"id": "INTEGER", "ts": "INTEGER", "topology_id": "INTEGER", ...})
+ds3 = dataset.UdaoDataset(path="./system_states.csv", 
+                          schema={"ts": "INTEGER", "s1": "FLOAT", ...})
+ds = dataset.merge(ds1, ds2, how="inner", on="id")
+ds = dataset.merge_system_states(ds, ds3, how="closet-before", on="ts")
 
 
 class MyDataset(dataset.UdaoDataset):  # construct dataset for training with customized constructor
@@ -191,6 +195,7 @@ x_reco = moo.solve(
     - Currently, the `model` submodule in this MOO module is isolated from our modeling part. One solution to connect them is to inherit all the built-in models from the modeling part to the `BaseModel` in `base_model.py`.
     - To demonstrate the capabilities of the MOO module, we provide 3-4 separate examples that include closed-form models, GPR models, and tiny neural networks. 
 
+
 ## Coding work to be done
 
 We aim to integrate our code into a Python library called `udao`, making it accessible for users to install and utilize through a simple `pip install udao` command. The `udao` library is designed to offer three core modules:
@@ -203,48 +208,67 @@ We aim to integrate our code into a Python library called `udao`, making it acce
 
 We summarize the coding work into three categories. 
 
-### Data Processing Module
+### Data Processing Milestores
 
-1. The classes and functions (refactor into seperate files if needed)
+1. The classes and functions (refactor into separate files if needed) `1 week`
     ```python
-    from abc import ABCMeta
     from sklearn.preprocessing import StandardScaler
     from datasets import Dataset
     from torch.utils.data import DataLoader
     
     
-    class UdaoDataset(object, metaclass=ABCMeta):
+    class UdaoDataset(Dataset):
         """ tabular dataset"""
     
-        def __init__(self, path: str, schema: dict):
-            ...
+        def __init__(self, path: str, schema: dict, **kwargs):
+            """a wrapper for a basic `Dataset`, with specified the schema map"""
     
         @staticmethod
         def collate(samples):
             ...
     
     
-    def join(datasets: list[UdaoDataset], on_common_feat: str) -> UdaoDataset:
-        """join a list of datasets on a common feature (attribute)"""
+    def merge(dataset1: UdaoDataset, dataset2: UdaoDataset, how: str, on: str) -> UdaoDataset:
+        """wrap `pandas.merge`; inner join two datasets on a common feature (attribute)"""
         ...
-    
+
+    def merge_system_states(dataset: UdaoDataset, ts_dataset: UdaoDataset, how: str, on: str) -> UdaoDataset:
+        """
+            consider dataset as the table for each query trace and ts_dataset as the table for system states, 
+            we aim to get the latest observable system states for query
+            SQL (when how="closet-before")
+            dataset.ts, ARGMAX(ts_dataset.ts, ts_dataset.m1), ARGMAX(ts_dataset.ts, ts_dataset.m2), ...
+            FROM dataset, ts_dataset
+            WHERE dataset.ts > ts_dataset.ts 
+            GROUP BY dataset.ts
+        """
+        if how == "closet-before":
+            # we have example at https://github.com/Angryrou/UDAO2022/blob/906c77c3f158c1a93a036f3c478ca2ff60308996/examples/trace/spark-parser/2.tabular_generator_query_level.py#L30
+            ...
+            
     
     def pipeline(data: UdaoDataset, tr_val_te_split: list[float], sel_cols: list[str],
                  objs: list[str], normalization: str) -> [dict[str, DataLoader], dict]:
         """
-        a pipeline to do train/val/test split, drop unnecessary columns, handle categorical features,
-        and data normalization. Return a dict of DataLoaders for tr/val/te sets and the normalization meta info.
+        a pipeline to do train/val/test split, drop unnecessary columns, convert categorical features to dummy vectors,
+        and data normalization for numerical variables. Return 
+            - a dict of DataLoaders for tr/val/te sets 
+            - the normalization meta info (e.g., if using MinMax, return a dict mapping from a feat to its min and max)
         """
         ...
     ```
 
-2. Integrate a TPCH dataset (for white-box modeling) and a TPCxBB dataset (for black-box modeling) in the designed module as built-in choices.
+2. Two built-in datasets implementation `2 weeks`
+   - A built-in TPCH dataset `UdaoTPCHDataset` (for white-box modeling) by extending `UdaoDataset` to
+      - include an additional graph structure in UdaoDataset. Since we are having ~100K graphs with ~100 distinct topology structures, we maintain the graph structure and dataset separately to save memory.
+      - a customized collate function to align with our graph structure maintenance.
+      - We have examples at [here](https://github.com/Angryrou/UDAO2022/blob/906c77c3f158c1a93a036f3c478ca2ff60308996/utils/model/utils.py#L332).
+      - A synthetic toy Dataset example deriving from `UdaoTPCHDataset` and put it in the test case.
+   - A built-in TPCxBB dataset `UdaoTPCxBBDataset` (for black-box modeling) by leveraging `UdaoDataset` to `
 
-3. Construct a synthetic toy example of adding a customized Dataset.
+### Modeling Milestores
 
-### Modeling Module
-
-1. The classes and functions (refactor into separate files if needed)
+1. The classes and functions (refactor into separate files if needed) `2 weeks`
     
     ```python
     # model.py
@@ -335,15 +359,14 @@ We summarize the coding work into three categories.
     
     ```
 
-2. Integrate our built-in models (embedders and regressors) as listed in the above script for 
+2. Integrate our built-in models (embedders and regressors) as listed in the above script for `2 weeks`
    - the black-box modeling approach
-   - the white-box modeling approach
-    
-3. Construct a synthetic toy example of adding a customized Models.
+   - the white-box modeling approach 
+     - deriving a separate toy example for test case
 
-### Optimization Module
+### Optimization Milestores
 
-1. The classes and functions (refactor into seperate files if needed)
+1. The classes and functions (refactor into separate files if needed) `3 weeks`
     ```python
     # moo.py
     # Author(s): Chenghao Lyu <chenghao at cs dot umass dot edu>
@@ -436,4 +459,9 @@ We summarize the coding work into three categories.
     
     ```
 
-2. Integrate our existing MOO toy examples (including the optimization problem from TPCH dataset and model) 
+2. Add MOO examples for `2 week`
+   - built-in Dataset and model for TPCH
+     - use the derived test cases for dataset and model to construct the test case for this module
+   - built-in Dataset and model for TPCxBB
+   - 3 small examples (from Qi's 3 examples)
+     - Integrate our existing MOO toy examples (including the optimization problem from TPCH dataset and model) 
