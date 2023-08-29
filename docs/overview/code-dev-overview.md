@@ -6,10 +6,10 @@
     * [Dataset](#dataset)
     * [Model](#model)
     * [Optimization](#optimization)
-* [Coding work to be done](#coding-work-to-be-done)
-    * [Data Processing Milestores](#data-processing-milestores)
-    * [Modeling Milestores](#modeling-milestores)
-    * [Optimization Milestores](#optimization-milestores)
+* [Coding work to be done (12 weeks)](#coding-work-to-be-done-12-weeks)
+    * [Data Processing Milestones (3 weeks)](#data-processing-milestones-3-weeks)
+    * [Modeling Milestones (4 weeks)](#modeling-milestones-4-weeks)
+    * [Optimization Milestones (5 weeks)](#optimization-milestones-5-weeks)
 
 ## The end-to-end usage of UDAO
 
@@ -196,7 +196,7 @@ x_reco = moo.solve(
     - To demonstrate the capabilities of the MOO module, we provide 3-4 separate examples that include closed-form models, GPR models, and tiny neural networks. 
 
 
-## Coding work to be done
+## Coding work to be done (12 weeks)
 
 We aim to integrate our code into a Python library called `udao`, making it accessible for users to install and utilize through a simple `pip install udao` command. The `udao` library is designed to offer three core modules:
 
@@ -208,7 +208,7 @@ We aim to integrate our code into a Python library called `udao`, making it acce
 
 We summarize the coding work into three categories. 
 
-### Data Processing Milestores
+### Data Processing Milestones (3 weeks)
 
 1. The classes and functions (refactor into separate files if needed) `1 week`
     ```python
@@ -266,7 +266,7 @@ We summarize the coding work into three categories.
       - A synthetic toy Dataset example deriving from `UdaoTPCHDataset` and put it in the test case.
    - A built-in TPCxBB dataset `UdaoTPCxBBDataset` (for black-box modeling) by leveraging `UdaoDataset` to `
 
-### Modeling Milestores
+### Modeling Milestones (4 weeks)
 
 1. The classes and functions (refactor into separate files if needed) `2 weeks`
     
@@ -364,7 +364,7 @@ We summarize the coding work into three categories.
    - the white-box modeling approach 
      - deriving a separate toy example for test case
 
-### Optimization Milestores
+### Optimization Milestones (5 weeks)
 
 1. The classes and functions (refactor into separate files if needed) `3 weeks`
     ```python
