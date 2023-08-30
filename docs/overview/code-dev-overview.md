@@ -228,11 +228,11 @@ We summarize the coding work into three categories.
             ...
     
     
-    def merge(dataset1: UdaoDataset, dataset2: UdaoDataset, how: str, on: str) -> UdaoDataset:
+    def merge(dataset1: UdaoDataset, dataset2: UdaoDataset, how: str, on: str, **kwargs) -> UdaoDataset:
         """wrap `pandas.merge`; inner join two datasets on a common feature (attribute)"""
         ...
 
-    def merge_system_states(dataset: UdaoDataset, ts_dataset: UdaoDataset, how: str, on: str) -> UdaoDataset:
+    def merge_system_states(dataset: UdaoDataset, ts_dataset: UdaoDataset, how: str, on: str, **kwargs) -> UdaoDataset:
         """
             consider dataset as the table for each query trace and ts_dataset as the table for system states, 
             we aim to get the latest observable system states for query
@@ -248,7 +248,7 @@ We summarize the coding work into three categories.
             
     
     def pipeline(data: UdaoDataset, tr_val_te_split: list[float], sel_cols: list[str],
-                 objs: list[str], normalization: str) -> [dict[str, DataLoader], dict]:
+                 objs: list[str], normalization: str, **kwargs) -> [dict[str, DataLoader], dict]:
         """
         a pipeline to do train/val/test split, drop unnecessary columns, convert categorical features to dummy vectors,
         and data normalization for numerical variables. Return 
@@ -279,7 +279,7 @@ We summarize the coding work into three categories.
     
     
     class ModelWraper():
-        def __init__(self, type: str, net_params: dict, *args):
+        def __init__(self, type: str, net_params: dict, **kwargs):
             self.model = get_model_by_type(type, net_params)
     
         def fit(self, train_set: Dataset, val_set: Dataset, loss: WMAPE, learning_params: dict, *args):
@@ -405,7 +405,8 @@ We summarize the coding work into three categories.
             moo_algo: MOOAlgo,
             moo_solver: MOOSolver,
             moo_preference: Preference,
-            constraints: list[Constraint]
+            constraints: list[Constraint],
+            **kwargs
     ) -> list[Variable]:
         ...
     
