@@ -6,10 +6,10 @@
     * [Dataset](#dataset)
     * [Model](#model)
     * [Optimization](#optimization)
-* [Coding work to be done (12 weeks)](#coding-work-to-be-done-12-weeks)
+* [Coding work to be done (8 weeks)](#coding-work-to-be-done-8-weeks-full-time)
     * [Data Processing Milestones (3 weeks)](#data-processing-milestones-3-weeks)
-    * [Modeling Milestones (4 weeks)](#modeling-milestones-4-weeks)
-    * [Optimization Milestones (5 weeks)](#optimization-milestones-5-weeks)
+    * [Modeling Milestones (2 weeks)](#modeling-milestones-2-weeks)
+    * [Optimization Milestones (3 weeks)](#optimization-milestones-3-weeks)
 
 ## The end-to-end usage of UDAO
 
