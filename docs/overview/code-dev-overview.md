@@ -16,7 +16,7 @@
 ### Diagram
 The diagram of our UDAO system is as follows. We aim to use our developed Python library `udao` to solve the Multi-objective Optimization (MOO) problem given the user-defined optimization problem and datasets.
 
-<img src="figs/udao-io2.png" width="70%">
+<img src="figs/udao-io3.png" width="70%">
 
 ### Input/Output Details
 
@@ -28,7 +28,7 @@ We introduce the Input/Output details of UDAO in the setup procedure and tuning 
 
 1. the *objectives*, including the target objectives to be optimized with their optimization directions.
 2. the *variables*, including the decision (tunable) parameters, denoted as a *configuration*, and the non-decision (fixed) parameters, denoted as a *preset*.
-3. the *datasets* for training, including
+3. the *datasets* of the task traces for training, including
    - the location of each dataset.
    - the schema (data types of each feature) of each dataset.
    - the structure of the datasets. E.g., how to join different datasets to a joint dataset for training.
@@ -38,19 +38,24 @@ We introduce the Input/Output details of UDAO in the setup procedure and tuning 
    - the MOO solver, such as `Multi-objective Gradient Descent (mogd)`, `Random Sampling (rs)`, `Latin Hypercube Sampling (lhs)`, etc.
    - the optimization preference on the returned configuration. The user-defined weights or our internal weights
 
-**Output:** the predictive models $f$ that estimate every objective value $\widehat{\vec{y}}_i$ given the tunable parameters $\vec{x}$ and the non-tunable embeddings $\vec{e}$. 
+**Output:** 
+1. a task embedder $e$ that embeds the task ($d$) into a vector ($\vec{z}$) 
+2. a list of predictive models $f$ that estimate every objective value $\widehat{\vec{y}}_i$ given the configuration $\vec{x}$, the task embedding $\vec{z}$ and the preset non-decision parameters $\vec{\delta}$. 
 
-$$\widehat{\vec{y}} = f(\vec{x}, \vec{e})$$
+$$
+\vec{z} = e(d) \\
+\widehat{\vec{y}} = f(\vec{x}, \vec{z}, \vec{\delta})
+$$
 
 #### Tuning Procedure (online path)
 
-**Input:** the *arriving task* that can be summarized as the non-tunable embedding $\vec{e_t}$.
+**Input:** the *arriving task* $d_t$.
 
 **Ouputs:** the recommended configuration $\vec{x}^*_{reco}$ that can achieve Pareto-optimal with the optimization preferences on different objectives.
      
 
 ### A Desired Example
-An desired way to use UDAO in a`udao` package
+A desired way to use UDAO in a`udao` package
 
 ```python
 # !pip install udao
@@ -130,17 +135,17 @@ mw.fit(
 # [INPUT]
 
 # features for the arriving task
-query_plan = "{...}"
-t = [query_plan, p1, p2, ...]  # t is the representation of the arriving task for optimization 
-e = mw.get_embedding(t)
+d = "{...}" # d is the task trace such as a query_plan
+z = mw.get_embedding(d) # get the task embedding
 
 # [OUTPUT]
 
 # the recommended configuration
 x_reco = moo.solve(
     obj_funcs=mw.get_predictive_functions([o1, o2]),
-    configuration=[x1, x2, x3],
-    non_tunable_emb=e,
+    configuration=[x1, x2, x3], # decision parameters
+    preset=[p1, p2, p3],        # non-decision parameters
+    task_emb=z,
     moo_algo=moo_algo,
     moo_solver=moo_solver,
     moo_preference=moo_preference,
@@ -196,7 +201,7 @@ x_reco = moo.solve(
     - To demonstrate the capabilities of the MOO module, we provide 3-4 separate examples that include closed-form models, GPR models, and tiny neural networks. 
 
 
-## Coding work to be done (12 weeks)
+## Coding work to be done (8 weeks full-time)
 
 We aim to integrate our code into a Python library called `udao`, making it accessible for users to install and utilize through a simple `pip install udao` command. The `udao` library is designed to offer three core modules:
 
@@ -266,7 +271,7 @@ We summarize the coding work into three categories.
       - A synthetic toy Dataset example deriving from `UdaoTPCHDataset` and put it in the test case.
    - A built-in TPCxBB dataset `UdaoTPCxBBDataset` (for black-box modeling) by leveraging `UdaoDataset` to `
 
-### Modeling Milestones (4 weeks)
+### Modeling Milestones (2 weeks)
 
 1. The classes and functions (refactor into separate files if needed) `2 weeks`
     
@@ -364,7 +369,7 @@ We summarize the coding work into three categories.
    - the white-box modeling approach 
      - deriving a separate toy example for test case
 
-### Optimization Milestones (5 weeks)
+### Optimization Milestones (3 weeks)
 
 1. The classes and functions (refactor into separate files if needed) `3 weeks`
     ```python
@@ -401,7 +406,8 @@ We summarize the coding work into three categories.
     def solve(
             obj_funcs: list[func],
             configuration: list[Variable],
-            non_tunable_emb: th.Tensor,
+            preset: list[Variable],
+            taks_emb: th.Tensor,
             moo_algo: MOOAlgo,
             moo_solver: MOOSolver,
             moo_preference: Preference,
