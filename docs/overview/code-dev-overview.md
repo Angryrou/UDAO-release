@@ -39,13 +39,10 @@ We introduce the Input/Output details of UDAO in the setup procedure and tuning 
    - the optimization preference on the returned configuration. The user-defined weights or our internal weights
 
 **Output:** 
-1. a task embedder $e$ that embeds the task ($d$) into a vector ($\vec{z}$) 
-2. a list of predictive models $f$ that estimate every objective value $\widehat{\vec{y}}_i$ given the configuration $\vec{x}$, the task embedding $\vec{z}$ and the preset non-decision parameters $\vec{\delta}$. 
-
-$$
-\vec{z} = e(d) \\
-\widehat{\vec{y}} = f(\vec{x}, \vec{z}, \vec{\delta})
-$$
+1. a task embedder $e$ that embeds the task ($d$) into a vector ($\vec{z}$)
+$$\vec{z} = e(d)$$
+1. a list of predictive models $f$ that estimate every objective value $\widehat{\vec{y}}_i$ given the configuration $\vec{x}$, the task embedding $\vec{z}$ and the preset non-decision parameters $\vec{\delta}$. 
+$$\widehat{\vec{y}} = f(\vec{x}, \vec{z}, \vec{\delta})$$
 
 #### Tuning Procedure (online path)
 
