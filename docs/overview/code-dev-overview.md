@@ -260,7 +260,7 @@ We summarize the coding work into three categories.
         ...
     ```
 
-2. Two built-in datasets implementation `2 weeks`
+2. Two built-in datasets implementation `1-2 weeks`
    - A built-in TPCH dataset `UdaoTPCHDataset` (for white-box modeling) by extending `UdaoDataset` to
       - include an additional graph structure in UdaoDataset. Since we are having ~100K graphs with ~100 distinct topology structures, we maintain the graph structure and dataset separately to save memory.
       - a customized collate function to align with our graph structure maintenance.
@@ -270,7 +270,7 @@ We summarize the coding work into three categories.
 
 ### Modeling Milestones (2 weeks)
 
-1. The classes and functions (refactor into separate files if needed) `2 weeks`
+1. The classes and functions (refactor into separate files if needed) `1 weeks`
     
     ```python
     # model.py
@@ -361,14 +361,14 @@ We summarize the coding work into three categories.
     
     ```
 
-2. Integrate our built-in models (embedders and regressors) as listed in the above script for `2 weeks`
+2. Integrate our built-in models (embedders and regressors) as listed in the above script for `1 weeks`
    - the black-box modeling approach
    - the white-box modeling approach 
      - deriving a separate toy example for test case
 
 ### Optimization Milestones (3 weeks)
 
-1. The classes and functions (refactor into separate files if needed) `3 weeks`
+1. The classes and functions (refactor into separate files if needed) `2 weeks`
     ```python
     # moo.py
     # Author(s): Chenghao Lyu <chenghao at cs dot umass dot edu>
@@ -463,7 +463,7 @@ We summarize the coding work into three categories.
     
     ```
 
-2. Add MOO examples for `2 week`
+2. Add MOO examples for `1 week`
    - built-in Dataset and model for TPCH
      - use the derived test cases for dataset and model to construct the test case for this module
    - built-in Dataset and model for TPCxBB
