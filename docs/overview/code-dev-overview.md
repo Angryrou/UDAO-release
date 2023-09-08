@@ -16,7 +16,7 @@
 ### Diagram
 The diagram of our UDAO system is as follows. We aim to use our developed Python library `udao` to solve the Multi-objective Optimization (MOO) problem given the user-defined optimization problem and datasets.
 
-<img src="figs/udao-io3.png" width="70%">
+<img src="figs/udao-io4.png" width="70%">
 
 ### Input/Output Details
 
