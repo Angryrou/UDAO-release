@@ -10,6 +10,10 @@
     * [Data Processing Milestones (3 weeks)](#data-processing-milestones-3-weeks)
     * [Modeling Milestones (2 weeks)](#modeling-milestones-2-weeks)
     * [Optimization Milestones (3 weeks)](#optimization-milestones-3-weeks)
+* [Work Plan](#work-plan)
+    * [Project 1](#project-1)
+    * [Project 2](#project-2)
+
 
 ## The end-to-end usage of UDAO
 
@@ -469,3 +473,43 @@ We summarize the coding work into three categories.
    - built-in Dataset and model for TPCxBB
    - 3 small examples (from Qi's 3 examples)
      - Integrate our existing MOO toy examples (including the optimization problem from TPCH dataset and model) 
+
+## Work Plan
+
+Consider defining the work into two monthly projects. 
+We want you to bring your expertize to optimizing the efficiency of the python code.
+
+### Project 1 
+
+We aim at finishing the basics of the modules (`dataset` and `model`) with the built-in components of `UdaoTPCHDataset`
+
+1. the definition of concepts in `moo` module:
+   - `Objective`
+   - `Variable`
+   - `Constraint`
+   - `Preference`
+2. for `dataset`:
+   - the pipeline for `dataset`. 
+   - the built-in implementation for `UdaoTPCHDataset`.
+   - a test case derived from `UdaoTPCHDataset`.
+3. for `model`:
+   - the `ModelWraper` class.
+   - `ModelMetric` and `WMAPE` in `model.metric.*`.
+   - the `UdaoEmbedder`, `UdaoRegressor`, `UdaoModel` in `model.architecture.*`.
+   - other basic/utils functions in the `model`.
+   - the built-in implementation for `TPCH`, including `GTN`, `Averger`, `MLP`, `AveragerMLP`, `GTN_MLP`.
+   - a test case derived from `TPCH` when using `GTN_MLP` and `AveragerMLP`.
+
+### Project 2
+
+We aim at finishing the `moo` module, the built-in `TPCH` examples, and the built-in `TPCxBB` examples.
+
+1. for `moo`:
+   - the pipeline for `solve`.
+   - functions in the `moo.algo.*`, `moo.solver.*`, and `moo.utils.*`.
+   - built-in examples for `TPCH` and `TPCxBB` (after finishing the built-in implementations for `TPCxBB`).
+   - a test case derived from `TPCH`.
+2. for `dataset`
+   - the built-in implementation for `UdaoTPCHDataset`.
+3. for `model`
+   - the built-in implementation for `TPCxBB`, including `AutoEncoder` and `AutoEncoderMLP`.
